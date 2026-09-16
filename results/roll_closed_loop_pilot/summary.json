@@ -1,0 +1,62 @@
+[
+  {
+    "mode": "oracle",
+    "initial_roll_deg": 12.0,
+    "initial_rate": 0.15,
+    "seed": 1100001,
+    "pass_criteria": "last 0.5s mean |roll| <5deg, final |rate| <0.2rad/s, full duration within bounds",
+    "passed": true,
+    "failure": null,
+    "tail_mean_abs_roll_deg": 0.08038095972618273,
+    "final_roll_deg": 0.08672799216645094,
+    "final_rate": -0.00111564748256997,
+    "neutral_offset": -43.22782041070883,
+    "roll_inertia": 2.3951e-05,
+    "actuator_gear": -1e-05
+  },
+  {
+    "mode": "none",
+    "initial_roll_deg": 12.0,
+    "initial_rate": 0.15,
+    "seed": 1100001,
+    "pass_criteria": "last 0.5s mean |roll| <5deg, final |rate| <0.2rad/s, full duration within bounds",
+    "passed": false,
+    "failure": null,
+    "tail_mean_abs_roll_deg": 44.101402256137824,
+    "final_roll_deg": 46.26177438178685,
+    "final_rate": 0.14899195120775321,
+    "neutral_offset": -43.22782041070883,
+    "roll_inertia": 2.3951e-05,
+    "actuator_gear": -1e-05
+  },
+  {
+    "mode": "neural",
+    "initial_roll_deg": 12.0,
+    "initial_rate": 0.15,
+    "seed": 1100001,
+    "pass_criteria": "last 0.5s mean |roll| <5deg, final |rate| <0.2rad/s, full duration within bounds",
+    "passed": false,
+    "failure": "tilt, altitude or finite-state bound",
+    "tail_mean_abs_roll_deg": null,
+    "final_roll_deg": -60.007673463730285,
+    "final_rate": -1.031690544477318,
+    "neutral_offset": -43.22782041070883,
+    "roll_inertia": 2.3951e-05,
+    "actuator_gear": -1e-05
+  },
+  {
+    "mode": "disconnected",
+    "initial_roll_deg": 12.0,
+    "initial_rate": 0.15,
+    "seed": 1100001,
+    "pass_criteria": "last 0.5s mean |roll| <5deg, final |rate| <0.2rad/s, full duration within bounds",
+    "passed": false,
+    "failure": "tilt, altitude or finite-state bound",
+    "tail_mean_abs_roll_deg": null,
+    "final_roll_deg": -60.007673463730285,
+    "final_rate": -1.031690544477318,
+    "neutral_offset": -43.22782041070883,
+    "roll_inertia": 2.3951e-05,
+    "actuator_gear": -1e-05
+  }
+]
