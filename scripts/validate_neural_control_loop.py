@@ -64,14 +64,19 @@ def sample_step(controller, command: np.ndarray, seed: int) -> tuple[np.ndarray,
 
 
 def latency_ms(times: np.ndarray, signal: np.ndarray) -> float:
-    """First 20%-of-final crossing; NaN means no usable response."""
+    """First sustained 20%-of-final crossing; NaN means no usable response."""
     tail = signal[max(1, int(0.7 * len(signal))):]
     final = float(np.mean(tail))
     if abs(final) < 1e-9:
         return float("nan")
     threshold = 0.20 * abs(final)
-    crossed = np.flatnonzero(np.abs(signal) >= threshold)
-    return float(times[crossed[0]]) if len(crossed) else float("nan")
+    # A single 0.5 ms sample can cross the threshold because the LIF output is
+    # stochastic.  Require five sampled points (25 ms at the default stride)
+    # in the final response direction before reporting a control-relevant delay.
+    directed = signal * np.sign(final)
+    sustained = np.convolve(directed >= threshold, np.ones(5, dtype=int), mode="valid") == 5
+    crossed = np.flatnonzero(sustained)
+    return float(times[crossed[0] + 4]) if len(crossed) else float("nan")
 
 
 def main() -> None:
