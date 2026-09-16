@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.env/
+venv/
+
+# Training
+logs/
+
+# Models entraînés
+models/*.zip
+
+# Données MaleCNS
+data/male_cns/*.feather
+data/male_cns/neuroflight/*.feather
+data/male_cns/neuroflight/*.csv
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
