@@ -32,13 +32,22 @@ def session_neutral(controller):
 def run(viewer=None, vehicle=None):
     cal_path,inverse=latest_calibration(); controller=NeuroFlight3AxisControllerV2(seed=4242,verbose=True)
     model,data,thrust_id,moment_ids,ctrl_sign,hover = vehicle or build_vehicle(); dt=float(model.opt.timestep); alpha=math.exp(-dt/OUTPUT_TAU)
+    steps_ratio = dt / (controller.brain.dt_ms / 1000.0)
+    lif_steps = int(round(steps_ratio))
+    if lif_steps < 1 or not math.isclose(steps_ratio, lif_steps, abs_tol=1e-9):
+        raise ValueError('Physics timestep must be an integer multiple of the LIF timestep.')
     controller.reset_runtime(seed=999); neutral=session_neutral(controller)
     print('Session neutral:',np.array2string(neutral,precision=4)); print('Calibration:',cal_path)
     mujoco.mj_resetData(model,data); data.qpos[:3]=[0,0,START_Z]; data.qpos[3:7]=euler_to_quat_wxyz(*np.radians(INITIAL_EULER_DEG)); data.qvel[:]=0; data.qvel[3:6]=INITIAL_BODY_RATES; mujoco.mj_forward(model,data)
     filt=np.zeros(3); rows=[]; failure=None; min_z=START_Z; max_tilt=max_gyro=0.
     for step in range(int(round(SIM_SECONDS/dt))):
         gyro=get_named_sensor(model,data,'body_gyro'); euler=quat_to_euler_wxyz(data.qpos[3:7]); effective=gyro+ATTITUDE_K*euler
-        decoded=controller.step_from_effective_rate(effective,1)['decoded']; estimate=np.clip(inverse@(decoded-neutral),-MAX_EST,MAX_EST); filt=alpha*filt+(1-alpha)*estimate; moment = -ctrl_sign * MOMENT_GAIN * filt
+        # Advance both neural dynamics and its readout filter in physical time.
+        for _ in range(lif_steps):
+            decoded=controller.step_from_effective_rate(effective,1)['decoded']
+        estimate=np.clip(inverse@(decoded-neutral),-MAX_EST,MAX_EST); filt=alpha*filt+(1-alpha)*estimate
+        # build_vehicle returns -sign(gear); this already supplies the restoring sign.
+        moment = ctrl_sign * MOMENT_GAIN * filt
         thrust=altitude_thrust(model,thrust_id,hover,float(data.qpos[2]),float(data.qvel[2]),START_Z,0.,euler[0],euler[1]); data.ctrl[:]=0; data.ctrl[thrust_id]=thrust
         for a,act in enumerate(moment_ids): data.ctrl[act]=clipped_ctrl(model,act,moment[a])
         mujoco.mj_step(model,data)
