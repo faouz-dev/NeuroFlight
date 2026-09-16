@@ -1,24 +1,19 @@
-# Python
-__pycache__/
-*.pyc
-.env/
-venv/
+# Données connectome et cache généré
+data/male_cns/
+!data/male_cns/README.md
 
-# Training
+# Résultats générés
 logs/
+models/
+*.npy
+*.npz
 
-# Models entraînés
-models/*.zip
+# Python local
+.env/
+__pycache__/
+*.py[cod]
 
-# Données MaleCNS
-data/male_cns/*.feather
-data/male_cns/neuroflight/*.feather
-data/male_cns/neuroflight/*.csv
-
-# IDE
+# IDE / OS
 .vscode/
 .idea/
-
-# OS
 .DS_Store
-Thumbs.db
