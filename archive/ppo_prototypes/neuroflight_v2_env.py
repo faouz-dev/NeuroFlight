@@ -5,7 +5,7 @@ from gymnasium import spaces
 import mujoco
 import numpy as np
 
-from env.neuroflight_env import NeuroFlightEnv
+from archive.ppo_prototypes.neuroflight_env import NeuroFlightEnv
 
 
 class NeuroFlightV2Env(NeuroFlightEnv):
