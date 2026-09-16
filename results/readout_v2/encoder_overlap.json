@@ -1,0 +1,27 @@
+{
+  "axes": [
+    "roll",
+    "pitch",
+    "yaw"
+  ],
+  "sensory_neurons": 205,
+  "rank": 3,
+  "cosine_overlap": [
+    [
+      1.0,
+      -0.015240998561973753,
+      0.8496771266264587
+    ],
+    [
+      -0.015240998561973753,
+      1.0,
+      0.0
+    ],
+    [
+      0.8496771266264587,
+      0.0,
+      1.0000000000000002
+    ]
+  ],
+  "note": "Overlap of programmed sensory stimulation patterns. It can make decoding harder but does not establish its cause of failure."
+}
