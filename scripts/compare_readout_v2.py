@@ -53,7 +53,7 @@ def collect(brain, target, seed):
             samples.append(raw.copy())
     samples = np.asarray(samples)
     return dict(seed=seed, target=list(target), neutral=neutral.tolist(),
-                raw=samples[-20:].mean(axis=0).tolist(), trace=samples.tolist())
+                raw=samples[-20:].mean(axis=0).tolist())
 
 
 def arrays(rows, kind):
@@ -120,12 +120,24 @@ def main():
     brain = RawMotors(verbose=False)
     rows = {}
     for split, (commands, seeds) in splits.items():
-        rows[split] = []
+        checkpoint = OUT / (split+'.json')
+        rows[split] = json.loads(checkpoint.read_text()) if checkpoint.exists() else []
+        completed = {row['seed']: row for row in rows[split]}
+        expected = {seed+i for seed in seeds for i in range(len(commands))}
+        if len(completed) != len(rows[split]) or not set(completed).issubset(expected):
+            raise ValueError('Checkpoint contains duplicate or unexpected seeds')
         for seed in seeds:
             for i, command in enumerate(commands):
+                if seed+i in completed:
+                    if not np.allclose(completed[seed+i]['target'], command):
+                        raise ValueError('Checkpoint target differs from planned experiment')
+                    continue
                 rows[split].append(collect(brain, command, seed+i))
+                # Save each completed episode atomically; a restart resumes here.
+                temporary = checkpoint.with_suffix('.tmp')
+                temporary.write_text(json.dumps(rows[split], allow_nan=False))
+                temporary.replace(checkpoint)
             print(split, 'seed', seed, 'complete', flush=True)
-            (OUT / (split+'.json')).write_text(json.dumps(rows[split]))
     result = evaluate(**rows)
     result['motor_names'] = brain.motor_names
     (OUT/'report.json').write_text(json.dumps(result, indent=2, allow_nan=False))
