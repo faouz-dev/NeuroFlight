@@ -1,0 +1,6 @@
+# Reference environment recorded with the eight paired roll trials (Python 3.12).
+numpy==2.3.5
+pandas==2.2.3
+pyarrow==25.0.1
+mujoco==3.13.0
+mujoco-menagerie==2026.9.0
