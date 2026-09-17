@@ -9,8 +9,13 @@ Diagnostic seed 1100001 was previously observed; confirmation seed 1200001 is ne
 | 1100001 | +12 | baseline | 2.714 | 3.488 | 0.0102 | True |
 | 1100001 | +12 | reduced | 2.228 | -0.541 | 0.0903 | True |
 | 1100001 | -12 | baseline | 10.450 | 8.134 | -0.2008 | False |
+| 1100001 | -12 | reduced | 6.365 | 7.290 | 0.0068 | False |
+| 1200001 | +12 | baseline | 0.658 | -1.024 | 0.0220 | True |
+| 1200001 | +12 | reduced | 1.138 | -0.372 | 0.0315 | True |
+| 1200001 | -12 | baseline | 4.415 | -6.142 | -0.0633 | True |
+| 1200001 | -12 | reduced | 3.649 | -3.654 | 0.0075 | True |
 
-Completed trials: 3/8.
+Completed trials: 8/8.
 
 Pass requires a full run within bounds, mean absolute roll below 5 degrees over the last 0.5 s, and final absolute rate below 0.2 rad/s. It does not require final absolute roll below 5 degrees. Short runs and two seeds cannot establish reliable stabilization. Do not infer biological validation, 3-axis control, or hardware readiness.
 
