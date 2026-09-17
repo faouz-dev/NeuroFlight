@@ -36,6 +36,10 @@ Les courbes ci-dessus montrent aussi les dépassements et les oscillations.
 
 ## Voir le drone
 
+Pour ouvrir une relecture animée : `python -m scripts.replay_roll`.
+Les [instructions de visualisation](docs/REPLAY.md) expliquent aussi comment recalculer
+les essais avec les données déjà téléchargées.
+
 ![Rendu MuJoCo des angles enregistrés, cas réussi et cas non réussi](docs/assets/drone_roll_replay.png)
 
 Ces vues utilisent le modèle Crazyflie de MuJoCo Menagerie et les angles réellement
