@@ -24,6 +24,17 @@ def main():
         tail = r['tail_mean_abs_roll_deg']
         tail_s = f'{tail:.3f}' if tail is not None else 'bounds failure'
         lines.append(f"| {r['seed']} | {r['initial_roll_deg']:+g} | {r['variant']} | {tail_s} | {r['final_roll_deg']:.3f} | {r['final_rate']:.4f} | {r['passed']} |")
+    if len(rows) == 8:
+        means = {v: sum(r['tail_mean_abs_roll_deg'] for r in rows if r['variant']==v)/4
+                 for v in ('baseline', 'reduced')}
+        lines += ['', '## Result', '',
+                  f"Mean of the four tail errors: baseline {means['baseline']:.3f} degrees; reduced {means['reduced']:.3f} degrees.", '',
+                  'The reduced coefficient lowers tail error in three of four paired cases. '
+                  'Both variants pass three of four cases. The diagnostic negative-roll case still fails. '
+                  'On the new seed, both variants pass both signs; the reduced coefficient improves the negative case '
+                  'but slightly worsens the positive case by the tail-error metric. '
+                  'This is a partial improvement, not demonstrated higher reliability. '
+                  'Keep the baseline default unchanged; retain the reduced coefficient as an experimental candidate.', '']
     lines += ['', f'Completed trials: {len(rows)}/8.', '',
               'Pass requires a full run within bounds, mean absolute roll below 5 degrees over the last 0.5 s, '
               'and final absolute rate below 0.2 rad/s. It does not require final absolute roll below 5 degrees. '

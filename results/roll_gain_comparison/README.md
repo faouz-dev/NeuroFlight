@@ -15,6 +15,13 @@ Diagnostic seed 1100001 was previously observed; confirmation seed 1200001 is ne
 | 1200001 | -12 | baseline | 4.415 | -6.142 | -0.0633 | True |
 | 1200001 | -12 | reduced | 3.649 | -3.654 | 0.0075 | True |
 
+## Result
+
+Mean of the four tail errors: baseline 4.559 degrees; reduced 3.345 degrees.
+
+The reduced coefficient lowers tail error in three of four paired cases. Both variants pass three of four cases. The diagnostic negative-roll case still fails. On the new seed, both variants pass both signs; the reduced coefficient improves the negative case but slightly worsens the positive case by the tail-error metric. This is a partial improvement, not demonstrated higher reliability. Keep the baseline default unchanged; retain the reduced coefficient as an experimental candidate.
+
+
 Completed trials: 8/8.
 
 Pass requires a full run within bounds, mean absolute roll below 5 degrees over the last 0.5 s, and final absolute rate below 0.2 rad/s. It does not require final absolute roll below 5 degrees. Short runs and two seeds cannot establish reliable stabilization. Do not infer biological validation, 3-axis control, or hardware readiness.
